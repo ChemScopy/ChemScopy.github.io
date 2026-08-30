@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>设备 · 纳微矩阵</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <canvas id="particles-canvas"></canvas>
+
+    <header>
+        <div class="container nav-wrapper">
+            <div class="logo">◈ 纳微矩阵 <span>v2.0</span></div>
+            <div class="nav-links">
+                <a href="index.html">首页</a>
+                <a href="equipment.html" class="active">设备</a>
+                <a href="computing.html">计算引擎</a>
+                <a href="about.html">关于</a>
+                <a href="contact.html">联系</a>
+            </div>
+            <a href="contact.html" class="nav-cta">预约测试</a>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <h2 class="section-title">▍ 全部表征设备</h2>
+            <div class="section-sub"><span>高分辨率场发射扫描电镜 · 原位分析平台</span></div>
+
+            <div class="device-grid">
+                <!-- 三个设备卡片，与首页相同但可扩展更多 -->
+                <div class="device-card">
+                    <span class="device-tag">FE-SEM</span>
+                    <h3>热场发射扫描电镜</h3>
+                    <span class="model">ZEISS Gemini 360</span>
+                    <p style="font-size:14px; color:#94a3b8;">纳米颗粒、断口、抛光截面及磁性材料。</p>
+                    <div class="device-specs">
+                        <span><strong>分辨率</strong> 0.6 nm@15kV</span>
+                        <span><strong>放大</strong> 12x – 2,000,000x</span>
+                    </div>
+                    <button class="btn-detail" data-device="gemini360">查看详情</button>
+                </div>
+                <div class="device-card">
+                    <span class="device-tag">EDS / EBSD</span>
+                    <h3>能谱与背散射衍射</h3>
+                    <span class="model">Bruker QUANTAX</span>
+                    <p style="font-size:14px; color:#94a3b8;">实时元素面分布、晶体取向与织构分析。</p>
+                    <div class="device-specs">
+                        <span><strong>探测元素</strong> Be⁴ ~ Am⁹⁵</span>
+                        <span><strong>空间分辨率</strong> < 20 nm</span>
+                    </div>
+                    <button class="btn-detail" data-device="quantax">查看详情</button>
+                </div>
+                <div class="device-card">
+                    <span class="device-tag">In-Situ</span>
+                    <h3>原位纳米压痕/加热</h3>
+                    <span class="model">Bruker Hysitron</span>
+                    <p style="font-size:14px; color:#94a3b8;">动态观察相变、裂纹萌生与高温力学行为。</p>
+                    <div class="device-specs">
+                        <span><strong>温度</strong> RT ~ 1000°C</span>
+                        <span><strong>加载力</strong> 1 μN ~ 500 mN</span>
+                    </div>
+                    <button class="btn-detail" data-device="hysitron">查看详情</button>
+                </div>
+                <!-- 可再添加更多设备 -->
+            </div>
+
+            <div style="margin-top:20px;">
+                <a href="contact.html" class="btn-primary">预约设备测试</a>
+            </div>
+        </div>
+    </main>
+
+    <footer class="container">
+        <div>© 2026 纳微矩阵 · 高端表征与计算平台</div>
+        <div>
+            <a href="#">隐私条款</a> · <a href="#">技术协议</a> · <a href="mailto:info@nanomatrix.tech">联系工程师</a>
+        </div>
+    </footer>
+
+    <div id="deviceModal" class="modal-overlay">
+        <div class="modal-box">
+            <button class="close" id="modalClose">&times;</button>
+            <h2 id="modalTitle">设备详情</h2>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+    <div id="toast" class="toast"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
