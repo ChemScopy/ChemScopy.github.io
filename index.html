@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>纳微矩阵 · 高端表征与计算平台</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <canvas id="particles-canvas"></canvas>
+
+    <header>
+        <div class="container nav-wrapper">
+            <div class="logo">◈ 纳微矩阵 <span>v2.0</span></div>
+            <div class="nav-links">
+                <a href="index.html" class="active">首页</a>
+                <a href="equipment.html">设备</a>
+                <a href="computing.html">计算引擎</a>
+                <a href="about.html">关于</a>
+                <a href="contact.html">联系</a>
+            </div>
+            <a href="contact.html" class="nav-cta">预约测试</a>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+
+            <!-- ====== 英雄区 ====== -->
+            <section class="hero">
+                <div class="hero-grid">
+                    <div>
+                        <h1>原子尺度表征<br><span class="highlight">与计算驱动创新</span></h1>
+                        <p class="sub">聚焦扫描电镜（SEM/EDS/EBSD）与化学信息学。提供从微观形貌解析到高斯过程回归加速材料筛选的全栈技术解决方案。</p>
+                        <div class="hero-meta">
+                            <div><strong>> 0.6 nm</strong> 二次电子分辨率</div>
+                            <div><strong>> 10⁶</strong> 能谱通道数</div>
+                            <div><strong>> 40%</strong> 计算效率提升</div>
+                        </div>
+                        <div style="margin-top:28px; display:flex; gap:16px; flex-wrap:wrap;">
+                            <a href="contact.html" class="btn-primary">预约设备</a>
+                            <a href="equipment.html" class="btn-outline">浏览设备</a>
+                        </div>
+                    </div>
+                    <div class="hero-stats">
+                        <div class="stat-item"><span class="stat-label">加速电压</span><span class="stat-value">20 kV <span class="unit">(可调)</span></span></div>
+                        <div class="stat-item"><span class="stat-label">束流强度</span><span class="stat-value">1.2 nA <span class="unit">稳定</span></span></div>
+                        <div class="stat-item"><span class="stat-label">探测器类型</span><span class="stat-value">ETD + CBS + EDS</span></div>
+                        <div class="stat-item"><span class="stat-label">机器学习模型</span><span class="stat-value">GPR / Random Forest</span></div>
+                        <div style="margin-top:16px; background:#131c31; padding:12px; text-align:center; font-size:13px; color:#64748b; border:1px solid #1e293b;">
+                            <span style="color:#38bdf8;">●</span> 原位表征数据流已就绪
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ====== 设备概览（仅展示部分，更多请点链接） ====== -->
+            <h2 class="section-title">▍ 核心表征设备</h2>
+            <div class="section-sub">
+                <span>高分辨率场发射扫描电镜 · 原位分析平台</span>
+                <a href="equipment.html" style="color:#38bdf8;">查看全部设备 →</a>
+            </div>
+
+            <div class="device-grid">
+                <div class="device-card">
+                    <span class="device-tag">FE-SEM</span>
+                    <h3>热场发射扫描电镜</h3>
+                    <span class="model">ZEISS Gemini 360</span>
+                    <p style="font-size:14px; color:#94a3b8;">纳米颗粒、断口、抛光截面及磁性材料。</p>
+                    <div class="device-specs">
+                        <span><strong>分辨率</strong> 0.6 nm@15kV</span>
+                        <span><strong>放大</strong> 12x – 2,000,000x</span>
+                    </div>
+                    <button class="btn-detail" data-device="gemini360">查看详情</button>
+                </div>
+                <div class="device-card">
+                    <span class="device-tag">EDS / EBSD</span>
+                    <h3>能谱与背散射衍射</h3>
+                    <span class="model">Bruker QUANTAX</span>
+                    <p style="font-size:14px; color:#94a3b8;">实时元素面分布、晶体取向与织构分析。</p>
+                    <div class="device-specs">
+                        <span><strong>探测元素</strong> Be⁴ ~ Am⁹⁵</span>
+                        <span><strong>空间分辨率</strong> < 20 nm</span>
+                    </div>
+                    <button class="btn-detail" data-device="quantax">查看详情</button>
+                </div>
+                <div class="device-card">
+                    <span class="device-tag">In-Situ</span>
+                    <h3>原位纳米压痕/加热</h3>
+                    <span class="model">Bruker Hysitron</span>
+                    <p style="font-size:14px; color:#94a3b8;">动态观察相变、裂纹萌生与高温力学行为。</p>
+                    <div class="device-specs">
+                        <span><strong>温度</strong> RT ~ 1000°C</span>
+                        <span><strong>加载力</strong> 1 μN ~ 500 mN</span>
+                    </div>
+                    <button class="btn-detail" data-device="hysitron">查看详情</button>
+                </div>
+            </div>
+
+            <!-- ====== 计算引擎简介 ====== -->
+            <h2 class="section-title">▍ 化学机器学习 · 计算工作流</h2>
+            <div class="section-sub">
+                <span>融合密度泛函理论与光谱反演 · 主动学习驱动实验</span>
+                <a href="computing.html" style="color:#38bdf8;">了解更多 →</a>
+            </div>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:40px; margin-bottom:40px;">
+                <div>
+                    <div class="ml-math" style="background:#0a0f1a; border-left:4px solid #818cf8; padding:24px 28px;">
+                        <p>/* 高斯过程回归用于EDS定量修正 */</p>
+                        <div class="formula" style="color:#a5b4fc; font-size:20px; font-weight:500; margin:16px 0; background:#131c31; padding:12px 16px; border-radius:4px; text-align:center;">y(x) ~ GP( m(x), k(x, x') )</div>
+                        <p style="font-size:14px;">k(x,x') = σ² · exp( - ||x - x'||² / 2ℓ² ) + σₙ²·δ</p>
+                        <div class="caption" style="color:#64748b; font-size:13px; border-top:1px solid #1e293b; padding-top:16px; margin-top:12px;">◆ 核函数：Matern 5/2 · 自动相关性判定 (ARD)</div>
+                    </div>
+                </div>
+                <div>
+                    <div class="ml-features" style="display:flex; flex-direction:column; gap:16px;">
+                        <div class="ml-feature-item" style="background:#0f172a; padding:18px 24px; border:1px solid #1e293b; display:flex; align-items:center; gap:18px;">
+                            <span class="icon" style="color:#38bdf8; font-size:24px; opacity:0.7; width:30px; text-align:center;">◈</span>
+                            <div class="desc" style="font-size:14px; color:#94a3b8;"><strong>特征工程</strong> · 基于化学描述符自动化筛选</div>
+                        </div>
+                        <div class="ml-feature-item" style="background:#0f172a; padding:18px 24px; border:1px solid #1e293b; display:flex; align-items:center; gap:18px;">
+                            <span class="icon" style="color:#38bdf8; font-size:24px; opacity:0.7; width:30px; text-align:center;">◈</span>
+                            <div class="desc" style="font-size:14px; color:#94a3b8;"><strong>主动学习</strong> · 不确定性采样指导下一轮实验</div>
+                        </div>
+                        <div class="ml-feature-item" style="background:#0f172a; padding:18px 24px; border:1px solid #1e293b; display:flex; align-items:center; gap:18px;">
+                            <span class="icon" style="color:#38bdf8; font-size:24px; opacity:0.7; width:30px; text-align:center;">◈</span>
+                            <div class="desc" style="font-size:14px; color:#94a3b8;"><strong>谱图反演</strong> · 非负矩阵分解实现混相解耦</div>
+                        </div>
+                    </div>
+                    <div style="margin-top:20px;">
+                        <a href="computing.html" class="btn-outline">查看完整方案</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ====== 合作单位 ====== -->
+            <div class="partners">
+                <span>合作单位：</span>
+                <span>清华大学 · 浙江大学 · 中科院物理所 · 宁德时代 · 华为瓦特实验室</span>
+            </div>
+
+            <!-- ====== 快速联系 ====== -->
+            <div style="margin:60px 0 20px; background:#0f172a; border:1px solid #1e293b; padding:32px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:20px;">
+                <div>
+                    <h3 style="color:#f8fafc; font-weight:500;">有项目需求？立即联系我们</h3>
+                    <p style="color:#94a3b8; margin-top:8px;">电话：+86 (010) 8876-5432 ｜ 邮箱：info@nanomatrix.tech</p>
+                </div>
+                <a href="contact.html" class="btn-primary">预约咨询</a>
+            </div>
+
+        </div>
+    </main>
+
+    <footer class="container">
+        <div>© 2026 纳微矩阵 · 高端表征与计算平台</div>
+        <div>
+            <a href="#">隐私条款</a> · <a href="#">技术协议</a> · <a href="mailto:info@nanomatrix.tech">联系工程师</a>
+        </div>
+    </footer>
+
+    <!-- ===== 模态框 ===== -->
+    <div id="deviceModal" class="modal-overlay">
+        <div class="modal-box">
+            <button class="close" id="modalClose">&times;</button>
+            <h2 id="modalTitle">设备详情</h2>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+    <div id="toast" class="toast"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
