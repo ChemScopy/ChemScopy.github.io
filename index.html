@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>纳微矩阵 · 高端表征与计算平台</title>
+    <!-- 引入字体与基础库 -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <style>
+        /* ==================== 全局重置与科技暗色基调 ==================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #080c14;
+            color: #c8d6e5;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* 自定义滚动条 - 工业仪器感 */
+        ::-webkit-scrollbar {
+            width: 6px;
+            background: #0f172a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2a3a5c;
+            border-radius: 0px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #4a7a9c;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        /* ==================== 粒子背景 (Three.js 轻量实现) ==================== */
+        #particles-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none; /* 允许点击穿透 */
+            opacity: 0.5;
+        }
+
+        /* ==================== 头部导航 ==================== */
+        header {
+            position: relative;
+            z-index: 10;
+            padding: 24px 0;
+            border-bottom: 1px solid rgba(56, 189, 248, 0.15);
+            background: rgba(8, 12, 20, 0.75);
+            backdrop-filter: blur(12px);
+            position: sticky;
+            top: 0;
+            width: 100%;
+        }
+
+        .nav-wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            color: #f0f4ff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .logo span {
+            color: #38bdf8;
+            background: rgba(56, 189, 248, 0.1);
+            padding: 2px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 400;
+            border: 1px solid rgba(56, 189, 248, 0.3);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            font-size: 14px;
+            font-weight: 400;
+            color: #94a3b8;
+        }
+        .nav-links a {
+            color: inherit;
+            text-decoration: none;
+            transition: 0.2s;
+            border-bottom: 2px solid transparent;
+            padding-bottom: 4px;
+        }
+        .nav-links a:hover {
+            color: #e2e8f0;
+            border-bottom-color: #38bdf8;
+        }
+
+        .nav-cta {
+            background: transparent;
+            border: 1px solid #38bdf8;
+            color: #38bdf8;
+            padding: 8px 24px;
+            border-radius: 4px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.2s;
+            background: rgba(56, 189, 248, 0.05);
+        }
+        .nav-cta:hover {
+            background: #38bdf8;
+            color: #080c14;
+        }
+
+        /* ==================== 主内容 (相对定位置于顶层) ==================== */
+        main {
+            position: relative;
+            z-index: 5;
+        }
+
+        /* ---------- Hero 区域：硬核学术感 ---------- */
+        .hero {
+            padding: 80px 0 60px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            font-weight: 600;
+            line-height: 1.1;
+            letter-spacing: -1.5px;
+            color: #f8fafc;
+        }
+        .hero h1 .highlight {
+            background: linear-gradient(135deg, #38bdf8, #818cf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .hero p.sub {
+            font-size: 18px;
+            color: #94a3b8;
+            margin-top: 24px;
+            max-width: 540px;
+            font-weight: 300;
+            border-left: 3px solid #38bdf8;
+            padding-left: 24px;
+        }
+        .hero-meta {
+            display: flex;
+            gap: 40px;
+            margin-top: 40px;
+            font-size: 14px;
+            color: #64748b;
+            border-top: 1px solid #1e293b;
+            padding-top: 30px;
+        }
+        .hero-meta strong {
+            color: #e2e8f0;
+            font-weight: 600;
+        }
+
+        /* Hero 右侧 - 模拟“终端/仪器读数” */
+        .hero-stats {
+            background: #0f172a;
+            border: 1px solid #1e293b;
+            padding: 28px;
+            box-shadow: 0 20px 40px -20px rgba(0,0,0,0.8);
+            position: relative;
+        }
+        .hero-stats::before {
+            content: "● ● ●";
+            position: absolute;
+            top: 12px;
+            right: 20px;
+            color: #334155;
+            letter-spacing: 4px;
+            font-size: 12px;
+        }
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px dashed #1e293b;
+            font-size: 15px;
+        }
+        .stat-item:last-child {
+            border-bottom: none;
+        }
+        .stat-label {
+            color: #64748b;
+        }
+        .stat-value {
+            color: #f1f5f9;
+            font-family: 'Inter', monospace;
+            font-weight: 500;
+        }
+        .stat-value .unit {
+            color: #38bdf8;
+            font-size: 12px;
+            margin-left: 4px;
+        }
+
+        /* ---------- 核心设备展示 (SEM / 高端技术) ---------- */
+        .section-title {
+            font-size: 28px;
+            font-weight: 600;
+            color: #f1f5f9;
+            margin: 80px 0 16px 0;
+            letter-spacing: -0.5px;
+        }
+        .section-sub {
+            color: #64748b;
+            border-bottom: 1px solid #1e293b;
+            padding-bottom: 20px;
+            margin-bottom: 40px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .section-sub a {
+            color: #38bdf8;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .device-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        .device-card {
+            background: #0f172a;
+            border: 1px solid #1e293b;
+            padding: 28px;
+            transition: 0.25s ease;
+            position: relative;
+        }
+        .device-card:hover {
+            border-color: #38bdf8;
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px -12px rgba(56, 189, 248, 0.2);
+        }
+        .device-tag {
+            display: inline-block;
+            background: #1e293b;
+            color: #94a3b8;
+            font-size: 11px;
+            padding: 2px 12px;
+            letter-spacing: 0.5px;
+            margin-bottom: 16px;
+            border-radius: 2px;
+        }
+        .device-card h3 {
+            color: #f8fafc;
+            font-size: 20px;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+        .device-card .model {
+            color: #64748b;
+            font-size: 13px;
+            font-family: monospace;
+            margin-bottom: 20px;
+            display: block;
+        }
+        .device-specs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px 24px;
+            font-size: 13px;
+            border-top: 1px solid #1e293b;
+            padding-top: 18px;
+            margin-top: 12px;
+        }
+        .device-specs span {
+            color: #94a3b8;
+        }
+        .device-specs strong {
+            color: #e2e8f0;
+            font-weight: 500;
+        }
+
+        /* ---------- 化学机器学习 (去AI味 强调数学物理) ---------- */
+        .ml-section {
+            margin: 80px 0;
+            background: linear-gradient(0deg, #0b111f, transparent);
+            padding: 60px 0;
+            border-top: 1px solid #1e293b;
+            border-bottom: 1px solid #1e293b;
+        }
+
+        .ml-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+        }
+
+        .ml-math {
+            background: #0a0f1a;
+            border-left: 4px solid #818cf8;
+            padding: 24px 28px;
+            font-family: 'Inter', monospace;
+        }
+        .ml-math p {
+            color: #cbd5e1;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+        .ml-math .formula {
+            color: #a5b4fc;
+            font-size: 20px;
+            font-weight: 500;
+            margin: 16px 0;
+            letter-spacing: 0.5px;
+            background: #131c31;
+            padding: 12px 16px;
+            border-radius: 4px;
+            text-align: center;
+        }
+        .ml-math .caption {
+            color: #64748b;
+            font-size: 13px;
+            border-top: 1px solid #1e293b;
+            padding-top: 16px;
+            margin-top: 12px;
+        }
+
+        .ml-features {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .ml-feature-item {
+            background: #0f172a;
+            padding: 18px 24px;
+            border: 1px solid #1e293b;
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+        .ml-feature-item .icon {
+            color: #38bdf8;
+            font-size: 24px;
+            opacity: 0.7;
+            width: 30px;
+            text-align: center;
+        }
+        .ml-feature-item .desc {
+            font-size: 14px;
+            color: #94a3b8;
+        }
+        .ml-feature-item .desc strong {
+            color: #f1f5f9;
+        }
+
+        /* ---------- 推广/预约模块 (转化目标) ---------- */
+        .cta-section {
+            padding: 60px 0 80px 0;
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 40px;
+            align-items: center;
+        }
+        .cta-text h2 {
+            font-size: 32px;
+            font-weight: 500;
+            color: #f8fafc;
+        }
+        .cta-text p {
+            color: #94a3b8;
+            margin: 16px 0;
+            max-width: 480px;
+        }
+        .cta-btn-group {
+            display: flex;
+            gap: 16px;
+            margin-top: 24px;
+        }
+        .btn-primary {
+            background: #38bdf8;
+            border: none;
+            color: #080c14;
+            padding: 14px 40px;
+            font-weight: 600;
+            font-size: 15px;
+            cursor: pointer;
+            transition: 0.2s;
+            border-radius: 2px;
+            letter-spacing: 0.5px;
+        }
+        .btn-primary:hover {
+            background: #7dd3fc;
+            transform: scale(1.02);
+        }
+        .btn-outline {
+            background: transparent;
+            border: 1px solid #334155;
+            color: #cbd5e1;
+            padding: 14px 32px;
+            font-weight: 400;
+            font-size: 15px;
+            cursor: pointer;
+            transition: 0.2s;
+            border-radius: 2px;
+        }
+        .btn-outline:hover {
+            border-color: #64748b;
+            background: #1e293b;
+        }
+
+        .cta-stats-box {
+            background: #0f172a;
+            border: 1px solid #1e293b;
+            padding: 32px;
+            text-align: center;
+        }
+        .cta-stats-box .number {
+            font-size: 42px;
+            font-weight: 300;
+            color: #f8fafc;
+        }
+        .cta-stats-box .number span {
+            color: #38bdf8;
+        }
+        .cta-stats-box .label {
+            color: #64748b;
+            font-size: 14px;
+            margin-top: 8px;
+        }
+
+        /* ---------- Footer ---------- */
+        footer {
+            border-top: 1px solid #1e293b;
+            padding: 40px 0;
+            color: #475569;
+            font-size: 13px;
+            display: flex;
+            justify-content: space-between;
+        }
+        footer a {
+            color: #64748b;
+            text-decoration: none;
+        }
+        footer a:hover {
+            color: #94a3b8;
+        }
+
+        /* ==================== 响应式适配 ==================== */
+        @media (max-width: 1024px) {
+            .device-grid { grid-template-columns: 1fr 1fr; }
+            .hero-grid { grid-template-columns: 1fr; }
+            .ml-grid { grid-template-columns: 1fr; }
+            .cta-section { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 640px) {
+            .device-grid { grid-template-columns: 1fr; }
+            .nav-links { display: none; }
+            .hero h1 { font-size: 32px; }
+            .container { padding: 0 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ========== 粒子画布 (物理引擎模拟原子/晶格) ========== -->
+    <canvas id="particles-canvas"></canvas>
+
+    <!-- ========== 头部 ========== -->
+    <header>
+        <div class="container nav-wrapper">
+            <div class="logo">
+                ◈ 纳微矩阵
+                <span>v2.0</span>
+            </div>
+            <div class="nav-links">
+                <a href="#">设备目录</a>
+                <a href="#">计算引擎</a>
+                <a href="#">技术白皮书</a>
+                <a href="#">关于</a>
+            </div>
+            <button class="nav-cta">预约测试</button>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+
+            <!-- ====== HERO ====== -->
+            <section class="hero">
+                <div class="hero-grid">
+                    <div>
+                        <h1>
+                            原子尺度表征<br>
+                            <span class="highlight">与计算驱动创新</span>
+                        </h1>
+                        <p class="sub">
+                            聚焦扫描电镜（SEM/EDS/EBSD）与化学信息学。提供从微观形貌解析到高斯过程回归加速材料筛选的全栈技术解决方案。
+                        </p>
+                        <div class="hero-meta">
+                            <div><strong>> 0.6 nm</strong> 二次电子分辨率</div>
+                            <div><strong>> 10⁶</strong> 能谱通道数</div>
+                            <div><strong>> 40%</strong> 计算效率提升</div>
+                        </div>
+                    </div>
+                    <div class="hero-stats">
+                        <div class="stat-item">
+                            <span class="stat-label">加速电压</span>
+                            <span class="stat-value">20 kV <span class="unit">(可调)</span></span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">束流强度</span>
+                            <span class="stat-value">1.2 nA <span class="unit">稳定</span></span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">探测器类型</span>
+                            <span class="stat-value">ETD + CBS + EDS</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">机器学习模型</span>
+                            <span class="stat-value">GPR / Random Forest</span>
+                        </div>
+                        <div style="margin-top:16px; background:#131c31; padding:12px; text-align:center; font-size:13px; color:#64748b; border:1px solid #1e293b;">
+                            <span style="color:#38bdf8;">●</span> 原位表征数据流已就绪
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ====== 设备推广：SEM 与高端技术 ====== -->
+            <h2 class="section-title">▍ 核心表征设备</h2>
+            <div class="section-sub">
+                <span>高分辨率场发射扫描电镜 · 原位分析平台</span>
+                <a href="#">查看完整技术档案 →</a>
+            </div>
+
+            <div class="device-grid">
+                <div class="device-card">
+                    <span class="device-tag">FE-SEM</span>
+                    <h3>热场发射扫描电镜</h3>
+                    <span class="model">ZEISS Gemini 360</span>
+                    <p style="font-size:14px; color:#94a3b8;">适用于纳米颗粒、断口、抛光截面及磁性材料。</p>
+                    <div class="device-specs">
+                        <span><strong>分辨率</strong> 0.6 nm@15kV</span>
+                        <span><strong>放大</strong> 12x – 2,000,000x</span>
+                    </div>
+                </div>
+                <div class="device-card">
+                    <span class="device-tag">EDS / EBSD</span>
+                    <h3>能谱与背散射衍射</h3>
+                    <span class="model">Bruker QUANTAX</span>
+                    <p style="font-size:14px; color:#94a3b8;">实时元素面分布、晶体取向与织构分析。</p>
+                    <div class="device-specs">
+                        <span><strong>探测元素</strong> Be⁴ ~ Am⁹⁵</span>
+                        <span><strong>空间分辨率</strong> < 20 nm</span>
+                    </div>
+                </div>
+                <div class="device-card">
+                    <span class="device-tag">In-Situ</span>
+                    <h3>原位纳米压痕/加热</h3>
+                    <span class="model">Bruker Hysitron</span>
+                    <p style="font-size:14px; color:#94a3b8;">动态观察相变、裂纹萌生与高温力学行为。</p>
+                    <div class="device-specs">
+                        <span><strong>温度</strong> RT ~ 1000°C</span>
+                        <span><strong>加载力</strong> 1 μN ~ 500 mN</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ====== 化学机器学习 ====== -->
+            <div class="ml-section">
+                <div class="ml-grid">
+                    <div>
+                        <h2 style="font-size:26px; font-weight:500; color:#f8fafc; margin-bottom:20px;">▍ 化学机器学习 · 计算工作流</h2>
+                        <p style="color:#94a3b8; margin-bottom:24px; font-size:15px;">
+                            融合密度泛函理论（DFT）与光谱反演。利用贝叶斯优化加速实验设计，降低高维特征空间的试错成本。
+                        </p>
+                        <div class="ml-math">
+                            <p>/* 高斯过程回归用于EDS定量修正 */</p>
+                            <div class="formula">
+                                y(x) ~ GP( m(x), k(x, x') )
+                            </div>
+                            <p style="font-size:14px;">
+                                k(x,x') = σ² · exp( - ||x - x'||² / 2ℓ² ) + σₙ²·δ
+                            </p>
+                            <div class="caption">
+                                ◆ 核函数：Matern 5/2 · 自动相关性判定 (ARD)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ml-features">
+                        <div class="ml-feature-item">
+                            <div class="icon">◈</div>
+                            <div class="desc"><strong>特征工程</strong> · 基于化学描述符（电负性、半径、配位数）自动化筛选</div>
+                        </div>
+                        <div class="ml-feature-item">
+                            <div class="icon">◈</div>
+                            <div class="desc"><strong>主动学习</strong> · 不确定性采样指导下一轮 SEM/EDS 实验</div>
+                        </div>
+                        <div class="ml-feature-item">
+                            <div class="icon">◈</div>
+                            <div class="desc"><strong>谱图反演</strong> · 非负矩阵分解（NMF）实现混相像素级解耦</div>
+                        </div>
+                        <div class="ml-feature-item">
+                            <div class="icon">◈</div>
+                            <div class="desc"><strong>迁移学习</strong> · 预训练模型在氧化物、合金体系中的微调策略</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ====== 推广效果转化区 ====== -->
+            <section class="cta-section">
+                <div class="cta-text">
+                    <h2>推动您的研究边界</h2>
+                    <p>提供从设备机时预约、原位实验设计到机器学习建模的全链路技术支持。已有 60+ 课题组与工业研发部门采用我们的方案。</p>
+                    <div class="cta-btn-group">
+                        <button class="btn-primary">预约设备 / 咨询方案</button>
+                        <button class="btn-outline">下载技术手册 (PDF)</button>
+                    </div>
+                </div>
+                <div class="cta-stats-box">
+                    <div class="number">> <span>400</span></div>
+                    <div class="label">累计完成机时（小时）</div>
+                    <div style="width:100%; height:2px; background:#1e293b; margin:18px 0;"></div>
+                    <div style="font-size:14px; color:#94a3b8;">
+                        合作单位：<br> 清华 · 浙大 · 中科院 · 宁德时代
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <footer class="container">
+        <div>© 2026 纳微矩阵 · 高端表征与计算平台</div>
+        <div>
+            <a href="#">隐私条款</a> · <a href="#">技术协议</a> · <a href="#">联系工程师</a>
+        </div>
+    </footer>
+
+    <script>
+        // ================================================================
+        // 去除 AI 味的核心逻辑：基于物理模拟的粒子画布（非通用散点）
+        // 模拟晶格振动 / 电子束扫描的动态效果
+        // ================================================================
+        (function() {
+            const canvas = document.getElementById('particles-canvas');
+            const ctx = canvas.getContext('2d');
+
+            let width, height;
+            let particles = [];
+            const PARTICLE_COUNT = 140;
+
+            // 初始化尺寸
+            function resize() {
+                width = canvas.width = window.innerWidth;
+                height = canvas.height = window.innerHeight;
+            }
+            window.addEventListener('resize', resize);
+            resize();
+
+            // 生成粒子：倾向在左侧和中间聚集（模拟电子束聚焦区域）
+            for (let i = 0; i < PARTICLE_COUNT; i++) {
+                let x, y;
+                if (i < 80) {
+                    // 核心区域 偏向中心偏左
+                    x = width * 0.2 + Math.random() * width * 0.4;
+                    y = height * 0.2 + Math.random() * height * 0.6;
+                } else {
+                    x = Math.random() * width;
+                    y = Math.random() * height;
+                }
+                particles.push({
+                    x: x,
+                    y: y,
+                    vx: (Math.random() - 0.5) * 0.25,
+                    vy: (Math.random() - 0.5) * 0.25,
+                    radius: 0.8 + Math.random() * 1.6,
+                    // 模拟原子序数 contrast
+                    brightness: 0.3 + Math.random() * 0.6
+                });
+            }
+
+            // 绘制
+            function draw() {
+                ctx.clearRect(0, 0, width, height);
+
+                // 1. 绘制连线 (模拟键合/网络)
+                ctx.strokeStyle = 'rgba(56, 189, 248, 0.12)';
+                ctx.lineWidth = 0.6;
+                for (let i = 0; i < particles.length; i++) {
+                    for (let j = i + 1; j < particles.length; j++) {
+                        const dx = particles[i].x - particles[j].x;
+                        const dy = particles[i].y - particles[j].y;
+                        const dist = Math.sqrt(dx * dx + dy * dy);
+                        if (dist < 150) {
+                            ctx.beginPath();
+                            ctx.moveTo(particles[i].x, particles[i].y);
+                            ctx.lineTo(particles[j].x, particles[j].y);
+                            ctx.stroke();
+                        }
+                    }
+                }
+
+                // 2. 绘制粒子 (梯度发光圆点)
+                for (let p of particles) {
+                    const gradient = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.radius * 3);
+                    const alpha = p.brightness * 0.7;
+                    gradient.addColorStop(0, `rgba(148, 200, 255, ${alpha})`);
+                    gradient.addColorStop(1, `rgba(56, 189, 248, 0)`);
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.radius * 3, 0, Math.PI * 2);
+                    ctx.fillStyle = gradient;
+                    ctx.fill();
+
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.radius * 0.8, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(220, 240, 255, ${p.brightness * 0.9})`;
+                    ctx.fill();
+                }
+
+                // 3. 更新位置 (布朗运动 + 漂移，模拟电子束扫描)
+                for (let p of particles) {
+                    p.x += p.vx;
+                    p.y += p.vy;
+
+                    // 边界弹性与回拢
+                    if (p.x < 0 || p.x > width) p.vx *= -0.5;
+                    if (p.y < 0 || p.y > height) p.vy *= -0.5;
+
+                    // 轻微向中心聚集 (模拟场效应)
+                    const centerX = width * 0.45;
+                    const centerY = height * 0.5;
+                    const dx = centerX - p.x;
+                    const dy = centerY - p.y;
+                    p.vx += dx * 0.00003;
+                    p.vy += dy * 0.00003;
+
+                    // 限制速度
+                    const maxSpeed = 0.6;
+                    const sp = Math.sqrt(p.vx*p.vx + p.vy*p.vy);
+                    if (sp > maxSpeed) {
+                        p.vx = (p.vx / sp) * maxSpeed;
+                        p.vy = (p.vy / sp) * maxSpeed;
+                    }
+                }
+
+                requestAnimationFrame(draw);
+            }
+
+            draw();
+
+            // 窗口变化重置粒子分布 (保持比例)
+            window.addEventListener('resize', () => {
+                resize();
+                // 简单重置位置避免溢出
+                for (let p of particles) {
+                    p.x = Math.min(width, Math.max(0, p.x));
+                    p.y = Math.min(height, Math.max(0, p.y));
+                }
+            });
+        })();
+
+        // 平滑滚动与交互 (极简控制台提示)
+        console.log('纳微矩阵 · 前端展示层已启动。');
+        console.log('设备规格与ML模型基于真实物理参数模拟。');
+    </script>
+
+</body>
+</html>
